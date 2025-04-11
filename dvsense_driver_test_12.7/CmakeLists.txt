@@ -1,0 +1,46 @@
+cmake_minimum_required(VERSION 3.10)
+
+# 设置项目名称
+project(dvsense_driver_test_12.7)
+
+# 设置 C++ 标准
+set(CMAKE_CXX_STANDARD 20)
+
+# 防止 windows.h 重新定义 min/max 宏
+add_definitions(-D NOMINMAX)
+
+# 添加头文件路径（包含 DvsenseDriver 和 OpenCV）
+include_directories(
+    "D:/DvsenseDriver/include/DvsenseBase/EventBase"       # EventTypes.hpp
+    "D:/DvsenseDriver/include/DvsenseBase/Utils"           # TypeUtils.hpp
+    "D:/DvsenseDriver/include/DvsenseDriver/camera"        # DvsCamera.hpp 和 DvsCameraManager.hpp
+    "D:/DvsenseDriver/include/DvsenseDriver/FileReader"    # DvsFileReader.h
+    "D:/DvsenseDriver/include/DvsenseHal/camera"           # DvsCameraUtils.hpp
+    "D:/DvsenseDriver/include/DvsenseHal/EventStream"      # RawEventStreamFormat.hpp
+    "D:/opencv/build/include"                              # OpenCV 构建后的头文件路径（生成 opencv_modules.hpp）
+    "D:/opencv/sources/modules/core/include"              # OpenCV 源文件中的 core.hpp 路径
+    "D:/opencv/sources/include/opencv2"
+)
+
+# 添加库文件路径
+link_directories(
+    "D:/DvsenseDriver/lib"
+    "D:/opencv/build/x64/vc16/lib"  # OpenCV 库路径，确保指向 opencv_world4100d.lib 的目录
+)
+
+# 使用 find_package 查找 DvsenseDriver
+find_package(DvsenseDriver COMPONENTS Driver REQUIRED)
+
+# 创建可执行文件
+add_executable(dvsense_driver_test_12.7 main.cpp)
+
+# 链接库（使用 opencv_world4100d 代替独立模块）
+target_link_libraries(dvsense_driver_test_12.7 
+    DvsenseDriver::Driver
+    opencv_world4100d
+)
+
+# 添加运行时 DLL 路径（在 Windows 下需要动态库路径）
+set_target_properties(dvsense_driver_test_12.7 PROPERTIES
+    VS_DEBUGGER_ENVIRONMENT "PATH=%PATH%;D:/DvsenseDriver/bin;D:/opencv/build/x64/vc16/bin"
+)
