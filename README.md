@@ -1,4 +1,4 @@
-# Camera function reproduction based on OpenCv + driver and control interface provided by DVSense Driver
+# Camera function reproduction based on OpenCV + driver and control interface provided by DVSense Driver
 
 This repository contains C++ applications developed using the official DVSense driver library for interacting with DVS (Dynamic Vision Sensor) cameras. The project consists of two main components:
 
